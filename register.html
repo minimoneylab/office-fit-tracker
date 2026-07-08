@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users Registration — CA Trading Team Atomic Habit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">CA Trading Team<br>Atomic Habit</div>
+    </div>
+    <nav class="nav">
+      <a class="nav-button" href="index.html">Daily</a>
+      <a class="nav-button" href="weekly.html">Weekly</a>
+      <a class="nav-button" href="stats.html">Stats</a>
+      <a class="nav-button active" href="register.html">Users Registration</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-title">Users Registration</div>
+    <div class="page-subtitle">Add teammates and manage which activities can be logged</div>
+
+    <div id="config-warning" class="config-warning" style="display:none;">
+      Not connected to a database yet. Open <code>js/supabase-client.js</code> and paste in your Supabase URL and anon key.
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-label">Add a teammate</div>
+        <div class="form-row">
+          <label>Name</label>
+          <input type="text" id="new-user-name" placeholder="e.g. Jim Tsim">
+        </div>
+        <div class="form-row">
+          <label>Photo</label>
+          <input type="file" id="new-user-photo-file" accept="image/*">
+        </div>
+        <button class="btn-primary" onclick="addUser()">Add teammate</button>
+        <div id="upload-status" style="font-size:0.8125rem; color:var(--text-mid); margin-top:8px;"></div>
+
+        <div class="section-label" style="margin-top:28px;">Current team</div>
+        <ul class="simple-list" id="user-list"></ul>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Add an activity type</div>
+        <div class="form-row">
+          <label>Name</label>
+          <input type="text" id="new-activity-name" placeholder="e.g. Push-up">
+        </div>
+        <div class="form-row">
+          <label>Unit</label>
+          <input type="text" id="new-activity-unit" placeholder="e.g. times, seconds, litres">
+        </div>
+        <div class="form-row">
+          <label>Icon (emoji, optional)</label>
+          <input type="text" id="new-activity-icon" placeholder="💪">
+        </div>
+        <button class="btn-primary" onclick="addActivity()">Add activity</button>
+
+        <div class="section-label" style="margin-top:28px;">Current activities</div>
+        <ul class="simple-list" id="activity-list"></ul>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/register.js?v=2"></script>
+</body>
+</html>

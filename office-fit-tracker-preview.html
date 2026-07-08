@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — CA Trading Team Atomic Habit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --bg: #FAFAF5; --text: #2B2B2B; --text-mid: #6B6B6B; --text-light: #9B9B9B;
+    --border: #E5E5E5; --border-soft: #E8E8E8; --accent: #2C6E7F;
+    --accent-soft: rgba(44, 110, 127, 0.08); --good: #4A8B6F; --warn: #C97B4A;
+    --card-radius: 12px;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+.page-wrapper { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--bg); border-right: 1px solid var(--border); position: fixed; height: 100vh; }
+.sidebar-header { padding: 32px 24px 24px; border-bottom: 1px solid var(--border-soft); }
+.sidebar-logo { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+.nav { padding: 24px 0; }
+.nav-button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 24px; background: none; border: none; border-left: 3px solid transparent; text-align: left; cursor: pointer; font-family: inherit; font-size: 0.9375rem; color: var(--text-mid); }
+.nav-button:hover { background: rgba(0,0,0,0.03); color: var(--text); }
+.nav-button.active { background: var(--accent-soft); border-left-color: var(--accent); color: var(--text); font-weight: 500; }
+.main-content { flex: 1; margin-left: 240px; padding: 40px; max-width: 1100px; }
+.page-title { font-size: 1.75rem; font-weight: 400; margin-bottom: 4px; }
+.page-subtitle { font-size: 0.9375rem; color: var(--text-mid); margin-bottom: 32px; }
+.card { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 24px; }
+.section-label { font-size: 0.75rem; font-weight: 600; color: var(--text-light); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+.user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.user-card { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 16px 12px; text-align: center; cursor: pointer; }
+.user-card:hover { border-color: var(--accent); }
+.user-card.selected { border-color: var(--accent); background: var(--accent-soft); }
+.user-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 600; margin: 0 auto 10px; }
+.user-card-name { font-size: 0.875rem; font-weight: 500; }
+.activity-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); }
+.activity-row:last-child { border-bottom: none; }
+.activity-icon { font-size: 1.25rem; width: 28px; text-align: center; }
+.activity-label { flex: 0 0 100px; font-size: 0.9375rem; }
+.activity-input { width: 80px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9375rem; }
+.activity-input:focus { outline: none; border-color: var(--accent); }
+.activity-unit { font-size: 0.8125rem; color: var(--text-light); width: 55px; }
+.log-btn { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-family: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; }
+.log-btn:hover { opacity: 0.88; }
+.check-flash { color: var(--good); font-size: 1.1rem; opacity: 0; transition: opacity 0.2s; }
+.check-flash.show { opacity: 1; }
+.summary-list { list-style: none; }
+.summary-list li { font-size: 0.9375rem; padding: 8px 0; border-bottom: 1px solid var(--border-soft); }
+.summary-list li:last-child { border-bottom: none; }
+.summary-list .num { font-weight: 600; color: var(--accent); }
+.two-col { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: start; }
+.simple-list { list-style: none; }
+.simple-list li { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-soft); font-size: 0.9375rem; }
+.simple-list li:last-child { border-bottom: none; }
+.entry-actions { display: flex; gap: 6px; }
+.entry-actions button { background: none; border: 1px solid var(--border); border-radius: 6px; width: 28px; height: 28px; font-size: 0.875rem; cursor: pointer; color: var(--text-mid); }
+.entry-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+.leader-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-soft); }
+.leader-row:last-child { border-bottom: none; }
+.leader-rank { width: 22px; font-size: 0.8125rem; color: var(--text-light); font-weight: 600; }
+.leader-name { flex: 1; font-size: 0.9375rem; }
+.leader-val { font-weight: 600; color: var(--accent); font-size: 0.9375rem; }
+.pill { font-size: 0.75rem; color: var(--text-light); background: rgba(0,0,0,0.05); padding: 3px 10px; border-radius: 10px; }
+.form-row { margin-bottom: 16px; }
+.form-row label { display: block; font-size: 0.8125rem; font-weight: 500; color: var(--text-mid); margin-bottom: 6px; }
+.form-row input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9375rem; background: white; }
+.btn-primary { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-family: inherit; font-size: 0.9375rem; font-weight: 500; cursor: pointer; }
+.btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; font-family: inherit; font-size: 0.8125rem; cursor: pointer; }
+.bar-chart { display: flex; align-items: flex-end; gap: 16px; height: 180px; padding: 20px 0; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.bar { width: 100%; max-width: 48px; background: var(--accent); border-radius: 6px 6px 0 0; position: relative; }
+.bar-target-line { position: absolute; left: -8px; right: -8px; border-top: 2px dashed var(--warn); }
+.bar-day { font-size: 0.8125rem; color: var(--text-mid); margin-top: 8px; }
+.bar-val { font-size: 0.75rem; color: var(--text); margin-bottom: 4px; }
+.preview-note { background: #FFF6E9; border: 1px solid #F0D9A8; color: #8A6318; border-radius: 10px; padding: 12px 18px; font-size: 0.8125rem; margin-bottom: 24px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">CA Trading Team<br>Atomic Habit</div>
+    </div>
+    <nav class="nav">
+      <button class="nav-button active" data-page="daily">Daily</button>
+      <button class="nav-button" data-page="weekly">Weekly</button>
+      <button class="nav-button" data-page="stats">Stats</button>
+      <button class="nav-button" data-page="register">Users Registration</button>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="preview-note">Preview mode — sample data only, nothing here is saved. This is what the real site looks like once connected to a database.</div>
+
+    <!-- DAILY -->
+    <div id="page-daily">
+      <div class="page-title">Daily</div>
+      <div class="page-subtitle">Wednesday, July 8, 2026</div>
+
+      <div class="section-label">Select yourself</div>
+      <div class="user-grid">
+        <div class="user-card selected"><div class="user-avatar">JT</div><div class="user-card-name">Jim Tsim</div></div>
+        <div class="user-card"><div class="user-avatar">AL</div><div class="user-card-name">Amy Lau</div></div>
+        <div class="user-card"><div class="user-avatar">KC</div><div class="user-card-name">Kevin Chan</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="section-label">Log an activity</div>
+          <div class="activity-row">
+            <div class="activity-icon">🏋️</div><div class="activity-label">Squat</div>
+            <input type="number" class="activity-input" id="squat-input" placeholder="0">
+            <div class="activity-unit">times</div>
+            <button class="log-btn" onclick="demoLog('squat')">Log</button>
+            <span class="check-flash" id="check-squat">✓</span>
+          </div>
+          <div class="activity-row">
+            <div class="activity-icon">🧘</div><div class="activity-label">Plank</div>
+            <input type="number" class="activity-input" id="plank-input" placeholder="0">
+            <div class="activity-unit">seconds</div>
+            <button class="log-btn" onclick="demoLog('plank')">Log</button>
+            <span class="check-flash" id="check-plank">✓</span>
+          </div>
+          <div class="activity-row">
+            <div class="activity-icon">💧</div><div class="activity-label">Water</div>
+            <input type="number" class="activity-input" id="water-input" placeholder="0">
+            <div class="activity-unit">litres</div>
+            <button class="log-btn" onclick="demoLog('water')">Log</button>
+            <span class="check-flash" id="check-water">✓</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-label">Today's summary</div>
+          <ul class="summary-list" id="summary-list">
+            <li><span class="num">5</span> sets of Squat in average <span class="num">10.0</span> times each</li>
+            <li><span class="num">3</span> sets of Plank in average <span class="num">60.0</span> seconds each</li>
+            <li>Drank <span class="num">2</span> litres of water</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <div class="section-label">Today's entries</div>
+        <ul class="simple-list" id="entries-list">
+          <li><span>🏋️ Squat — 10 times</span><span class="entry-actions"><button title="Edit">✎</button><button title="Delete">✕</button></span></li>
+          <li><span>🧘 Plank — 65 seconds</span><span class="entry-actions"><button title="Edit">✎</button><button title="Delete">✕</button></span></li>
+          <li><span>💧 Water — 1 litres</span><span class="entry-actions"><button title="Edit">✎</button><button title="Delete">✕</button></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div id="page-weekly" style="display:none;">
+      <div class="page-title">Weekly</div>
+      <div class="page-subtitle">Monday – Friday, actual vs target</div>
+      <div class="card" style="margin-bottom:24px;">
+        <div style="display:flex; gap:14px; align-items:center;">
+          <select class="btn-secondary" style="padding:8px 12px;"><option>Jim Tsim</option></select>
+          <select class="btn-secondary" style="padding:8px 12px;"><option>Squat</option></select>
+          <span style="margin-left:auto; font-size:0.8125rem; color:var(--text-mid);">Weekly target: <strong style="color:var(--text);">200 times</strong></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">Squat — actual vs target (times)</div>
+        <div class="bar-chart">
+          <div class="bar-col"><div class="bar-val">45</div><div class="bar" style="height:75%;"><div class="bar-target-line" style="top:-12%;"></div></div><div class="bar-day">Mon</div></div>
+          <div class="bar-col"><div class="bar-val">30</div><div class="bar" style="height:50%;"><div class="bar-target-line" style="top:13%;"></div></div><div class="bar-day">Tue</div></div>
+          <div class="bar-col"><div class="bar-val">50</div><div class="bar" style="height:83%;"><div class="bar-target-line" style="top:-20%;"></div></div><div class="bar-day">Wed</div></div>
+          <div class="bar-col"><div class="bar-val">20</div><div class="bar" style="height:33%;"><div class="bar-target-line" style="top:30%;"></div></div><div class="bar-day">Thu</div></div>
+          <div class="bar-col"><div class="bar-val">15</div><div class="bar" style="height:25%;"><div class="bar-target-line" style="top:38%;"></div></div><div class="bar-day">Fri</div></div>
+        </div>
+        <div style="font-size:0.8125rem; color:var(--text-mid); margin-top:10px;">Dashed line = daily pace needed to hit 200/week &nbsp;·&nbsp; Real version uses an interactive Chart.js bar + cumulative line chart</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div id="page-stats" style="display:none;">
+      <div class="page-title">Stats</div>
+      <div class="page-subtitle">Team totals — this week</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-label">🏋️ Squat — team total this week</div>
+          <div style="font-size:2rem; font-weight:300;">385 <span style="font-size:1rem; color:var(--text-light);">times</span></div>
+        </div>
+        <div class="card">
+          <div class="section-label">💧 Water — team total this week</div>
+          <div style="font-size:2rem; font-weight:300;">18 <span style="font-size:1rem; color:var(--text-light);">litres</span></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-label">Squat leaderboard</div>
+          <div class="leader-row"><div class="leader-rank">1</div><div class="leader-name">Amy Lau</div><div class="leader-val">160 times</div></div>
+          <div class="leader-row"><div class="leader-rank">2</div><div class="leader-name">Jim Tsim</div><div class="leader-val">140 times</div></div>
+          <div class="leader-row"><div class="leader-rank">3</div><div class="leader-name">Kevin Chan</div><div class="leader-val">85 times</div></div>
+        </div>
+        <div class="card">
+          <div class="section-label">Plank leaderboard</div>
+          <div class="leader-row"><div class="leader-rank">1</div><div class="leader-name">Kevin Chan</div><div class="leader-val">420 seconds</div></div>
+          <div class="leader-row"><div class="leader-rank">2</div><div class="leader-name">Jim Tsim</div><div class="leader-val">310 seconds</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="page-register" style="display:none;">
+      <div class="page-title">Users Registration</div>
+      <div class="page-subtitle">Add teammates and manage which activities can be logged</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-label">Add a teammate</div>
+          <div class="form-row"><label>Name</label><input placeholder="e.g. Jim Tsim"></div>
+          <div class="form-row"><label>Photo URL (optional)</label><input placeholder="https://..."></div>
+          <button class="btn-primary">Add teammate</button>
+          <div class="section-label" style="margin-top:28px;">Current team</div>
+          <ul class="simple-list">
+            <li><span>Jim Tsim</span><button class="btn-secondary">Remove</button></li>
+            <li><span>Amy Lau</span><button class="btn-secondary">Remove</button></li>
+            <li><span>Kevin Chan</span><button class="btn-secondary">Remove</button></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="section-label">Add an activity type</div>
+          <div class="form-row"><label>Name</label><input placeholder="e.g. Push-up"></div>
+          <div class="form-row"><label>Unit</label><input placeholder="e.g. times, seconds, litres"></div>
+          <div class="form-row"><label>Icon (emoji, optional)</label><input placeholder="💪"></div>
+          <button class="btn-primary">Add activity</button>
+          <div class="section-label" style="margin-top:28px;">Current activities</div>
+          <ul class="simple-list">
+            <li><span>🏋️ Squat <span class="pill">times</span></span><button class="btn-secondary">Remove</button></li>
+            <li><span>🧘 Plank <span class="pill">seconds</span></span><button class="btn-secondary">Remove</button></li>
+            <li><span>💧 Water <span class="pill">litres</span></span><button class="btn-secondary">Remove</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.nav-button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['daily','weekly','stats','register'].forEach(p => {
+      document.getElementById('page-' + p).style.display = (p === btn.dataset.page) ? 'block' : 'none';
+    });
+  };
+});
+document.querySelectorAll('.user-card').forEach(card => {
+  card.onclick = () => {
+    document.querySelectorAll('.user-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  };
+});
+function demoLog(type) {
+  const input = document.getElementById(type + '-input');
+  if (!input.value) { input.focus(); return; }
+  input.value = '';
+  const check = document.getElementById('check-' + type);
+  check.classList.add('show');
+  setTimeout(() => check.classList.remove('show'), 1000);
+}
+</script>
+</body>
+</html>

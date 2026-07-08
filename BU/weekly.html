@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly — CA Trading Team Atomic Habit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">CA Trading Team<br>Atomic Habit</div>
+    </div>
+    <nav class="nav">
+      <a class="nav-button" href="index.html">Daily</a>
+      <a class="nav-button active" href="weekly.html">Weekly</a>
+      <a class="nav-button" href="stats.html">Stats</a>
+      <a class="nav-button" href="register.html">Users Registration</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-title">Weekly</div>
+    <div class="page-subtitle">Monday – Friday, actual vs target</div>
+
+    <div id="config-warning" class="config-warning" style="display:none;">
+      Not connected to a database yet. Open <code>js/supabase-client.js</code> and paste in your Supabase URL and anon key.
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+        <select class="select-inline" id="user-select"></select>
+        <select class="select-inline" id="activity-select"></select>
+
+        <span style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.8125rem; color:var(--text-mid);">Weekly target</label>
+          <input type="number" id="target-input" class="activity-input" style="width:80px;" placeholder="e.g. 200">
+          <button class="btn-secondary" onclick="saveTarget()">Save</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label" id="chart-title">Actual vs target</div>
+      <div class="chart-wrap">
+        <canvas id="weekly-chart" height="90"></canvas>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/weekly.js"></script>
+</body>
+</html>

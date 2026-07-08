@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stats — CA Trading Team Atomic Habit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">CA Trading Team<br>Atomic Habit</div>
+    </div>
+    <nav class="nav">
+      <a class="nav-button" href="index.html">Daily</a>
+      <a class="nav-button" href="weekly.html">Weekly</a>
+      <a class="nav-button active" href="stats.html">Stats</a>
+      <a class="nav-button" href="register.html">Users Registration</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-title">Stats</div>
+    <div class="page-subtitle">Team totals — this week</div>
+
+    <div id="config-warning" class="config-warning" style="display:none;">
+      Not connected to a database yet. Open <code>js/supabase-client.js</code> and paste in your Supabase URL and anon key.
+    </div>
+
+    <div class="grid-2" id="team-totals"></div>
+
+    <div class="grid-2" id="leaderboards"></div>
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/stats.js"></script>
+</body>
+</html>

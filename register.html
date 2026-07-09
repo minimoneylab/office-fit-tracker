@@ -41,6 +41,10 @@
           <label>Photo</label>
           <input type="file" id="new-user-photo-file" accept="image/*">
         </div>
+        <div class="form-row">
+          <label>Bio (optional)</label>
+          <textarea id="new-user-bio" placeholder="A line about yourself, or your fitness mission..." rows="3" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.9375rem; resize:vertical;"></textarea>
+        </div>
         <button class="btn-primary" onclick="addUser()">Add teammate</button>
         <div id="upload-status" style="font-size:0.8125rem; color:var(--text-mid); margin-top:8px;"></div>
 
@@ -74,6 +78,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
-<script src="js/register.js?v=2"></script>
+<script src="js/register.js?v=3"></script>
 </body>
 </html>

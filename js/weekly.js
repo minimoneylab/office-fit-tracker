@@ -1,6 +1,13 @@
 let chart = null;
 let currentTargetId = null;
 
+function localDateStr(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
 function mondayOfThisWeek() {
     const d = new Date();
     const day = d.getDay(); // 0 Sun ... 6 Sat
@@ -16,7 +23,7 @@ function weekdayDates() {
     for (let i = 0; i < 5; i++) {
         const d = new Date(monday);
         d.setDate(monday.getDate() + i);
-        dates.push(d.toISOString().split('T')[0]);
+        dates.push(localDateStr(d));
     }
     return dates;
 }

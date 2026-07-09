@@ -34,6 +34,19 @@
     <div class="user-grid" id="user-grid"></div>
 
     <div id="log-panel" style="display:none;">
+      <div class="profile-card">
+        <div class="profile-avatar-big" id="profile-avatar"></div>
+        <div>
+          <div class="profile-name" id="profile-name"></div>
+          <div class="profile-bio" id="profile-bio"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="section-label">Your daily targets</div>
+        <div id="daily-target-rows"></div>
+      </div>
+
       <div class="two-col">
         <div class="card">
           <div class="section-label">Log an activity</div>
@@ -59,6 +72,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
-<script src="js/daily.js"></script>
+<script src="js/daily.js?v=3"></script>
 </body>
 </html>

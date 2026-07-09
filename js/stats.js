@@ -1,19 +1,26 @@
+function localDateStr(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
 function mondayOfThisWeek() {
     const d = new Date();
     const day = d.getDay();
     const diff = day === 0 ? -6 : 1 - day;
     d.setDate(d.getDate() + diff);
     d.setHours(0, 0, 0, 0);
-    return d.toISOString().split('T')[0];
+    return localDateStr(d);
 }
 
 async function init() {
     if (!requireConfig()) return;
 
     const weekStart = mondayOfThisWeek();
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateStr(new Date());
 
-    const { data: users } = await db.from('users').select('id, name');
+    const { data: users } = await db.from('users').select('id, name, photo_url');
     const { data: activities } = await db.from('activity_types').select('*').eq('active', true).order('name');
     const { data: logs } = await db
         .from('logs')
@@ -23,7 +30,7 @@ async function init() {
 
     if (!users || !activities) return;
 
-    const userMap = Object.fromEntries(users.map(u => [u.id, u.name]));
+    const userMap = Object.fromEntries(users.map(u => [u.id, u]));
 
     renderTeamTotals(activities, logs || []);
     renderLeaderboards(activities, logs || [], userMap);
@@ -59,12 +66,21 @@ function renderLeaderboards(activities, logs, userMap) {
         const card = document.createElement('div');
         card.className = 'card';
         let rowsHtml = ranked.length
-            ? ranked.map(([uid, val], i) => `
+            ? ranked.map(([uid, val], i) => {
+                const user = userMap[uid];
+                const name = user ? user.name : 'Unknown';
+                const initials = name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                const avatar = user && user.photo_url
+                    ? `<img src="${user.photo_url}" alt="${name}">`
+                    : initials;
+                return `
                 <div class="leader-row">
                     <div class="leader-rank">${i + 1}</div>
-                    <div class="leader-name">${userMap[uid] || 'Unknown'}</div>
+                    <div class="leader-avatar">${avatar}</div>
+                    <div class="leader-name">${name}</div>
                     <div class="leader-val">${val} ${a.unit}</div>
-                </div>`).join('')
+                </div>`;
+            }).join('')
             : '<div class="empty-state">No entries yet this week.</div>';
         card.innerHTML = `<div class="section-label">${a.name} leaderboard</div>${rowsHtml}`;
         wrap.appendChild(card);

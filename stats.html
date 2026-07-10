@@ -16,18 +16,24 @@
     </div>
     <nav class="nav">
       <a class="nav-button" href="index.html">Daily</a>
-      <a class="nav-button" href="weekly.html">Weekly</a>
-      <a class="nav-button active" href="stats.html">Stats</a>
+      <a class="nav-button" href="weekly.html">Stats</a>
+      <a class="nav-button active" href="stats.html">Achievement</a>
       <a class="nav-button" href="register.html">Users Registration</a>
     </nav>
   </aside>
 
   <main class="main-content">
-    <div class="page-title">Stats</div>
+    <div class="page-title">Achievement</div>
     <div class="page-subtitle">Team totals — this week</div>
 
     <div id="config-warning" class="config-warning" style="display:none;">
       Not connected to a database yet. Open <code>js/supabase-client.js</code> and paste in your Supabase URL and anon key.
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="section-label">🏆 Weekly Achievement Leaderboard</div>
+      <div style="font-size:0.8125rem; color:var(--text-mid); margin-bottom:14px;">Each day's score is the average of that day's activities vs your daily targets (capped at 100%). The weekly score is the average across days so far this week.</div>
+      <div id="achievement-board"></div>
     </div>
 
     <div class="grid-2" id="team-totals"></div>
@@ -39,6 +45,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
-<script src="js/stats.js?v=3"></script>
+<script src="js/stats.js?v=5"></script>
 </body>
 </html>

@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1200">
+<link rel="icon" type="image/png" href="images/favicon.png">
 <title>Daily — CA Trading Team Atomic Habit</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Caveat:wght@500;600&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,7 +13,11 @@
 
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo">CA Trading Team<br>Atomic Habit</div>
+      <div class="brand-lockup">
+        <img src="images/logo.png" alt="CA Trading" class="brand-logo">
+        <span class="brand-name">FitLog</span>
+      </div>
+      <div class="brand-tagline">"Small daily logs, compound long-term gains."</div>
     </div>
     <nav class="nav">
       <a class="nav-button active" href="index.html">Daily</a>
@@ -23,7 +28,7 @@
   </aside>
 
   <main class="main-content">
-    <div class="page-title">Daily</div>
+    <div class="page-title fitlog-title">Daily <span class="fitlog-accent">FitLog</span></div>
     <div class="page-subtitle" id="today-label"></div>
 
     <div id="config-warning" class="config-warning" style="display:none;">
@@ -91,7 +96,9 @@
     </div>
 
 
-    <div id="no-user-hint" class="empty-state">Click your name above to start logging today's activity.</div>
+    <div id="no-user-hint" class="no-user-hint">
+      <img src="images/cat2.png" alt="Click your name above to start logging today's activity" class="cat-hint-img">
+    </div>
   </main>
 
 </div>

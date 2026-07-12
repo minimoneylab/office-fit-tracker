@@ -497,6 +497,7 @@ body {
 }
 
 .entry-left { display: flex; align-items: center; gap: 10px; }
+.entry-time { font-size: 0.75rem; color: var(--text-light); }
 .entry-actions { display: flex; align-items: center; gap: 6px; }
 .entry-actions button {
     background: none;

@@ -261,12 +261,14 @@ function renderEntriesList(data, error) {
         const name = row.activity_types?.name || 'Unknown';
         const unit = row.activity_types?.unit || '';
         const icon = row.activity_types?.icon || '';
+        const time = new Date(row.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         const li = document.createElement('li');
         li.id = `entry-${row.id}`;
         li.innerHTML = `
             <span class="entry-left">
                 <span>${icon} ${name}</span>
                 <span id="entry-value-${row.id}">${row.value} ${unit}</span>
+                <span class="entry-time">${time}</span>
             </span>
             <span class="entry-actions">
                 <button title="Edit" onclick="startEditEntry('${row.id}', ${row.value}, '${unit}')">✎</button>
@@ -393,11 +395,13 @@ async function loadHistoryEntries() {
         const name = row.activity_types?.name || 'Unknown';
         const unit = row.activity_types?.unit || '';
         const icon = row.activity_types?.icon || '';
+        const time = new Date(row.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         return `
             <li id="hist-entry-${row.id}">
                 <span class="entry-left">
                     <span>${icon} ${name}</span>
                     <span id="hist-value-${row.id}">${row.value} ${unit}</span>
+                    <span class="entry-time">${time}</span>
                 </span>
                 <span class="entry-actions">
                     <button title="Edit" onclick="startEditHistEntry('${row.id}', ${row.value})">✎</button>

@@ -5,6 +5,10 @@ function localDateStr(d) {
     return `${y}-${m}-${day}`;
 }
 
+function round2(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+}
+
 function mondayOfThisWeek() {
     const d = new Date();
     const day = d.getDay();
@@ -116,7 +120,7 @@ function renderTeamTotals(activities, logs) {
     wrap.innerHTML = '';
     activities.forEach(a => {
         const rows = logs.filter(l => l.activity_type_id === a.id);
-        const total = rows.reduce((sum, r) => sum + Number(r.value), 0);
+        const total = round2(rows.reduce((sum, r) => sum + Number(r.value), 0));
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
@@ -153,7 +157,7 @@ function renderLeaderboards(activities, logs, userMap) {
                     <div class="leader-rank">${i + 1}</div>
                     <div class="leader-avatar">${avatar}</div>
                     <div class="leader-name">${name}</div>
-                    <div class="leader-val">${val} ${a.unit}</div>
+                    <div class="leader-val">${round2(val)} ${a.unit}</div>
                 </div>`;
             }).join('')
             : '<div class="empty-state">No entries yet this week.</div>';

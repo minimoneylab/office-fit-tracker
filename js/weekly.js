@@ -16,6 +16,10 @@ function localDateStr(d) {
 
 function todayStr() { return localDateStr(new Date()); }
 
+function round2(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+}
+
 function dateRange(startStr, endStr) {
     const start = new Date(startStr + 'T00:00:00');
     const end = new Date(endStr + 'T00:00:00');
@@ -174,8 +178,8 @@ async function renderScrawlSummary() {
     });
 
     const activityLines = activityTypes.map(a => {
-        const week = totalsWeek[a.id] || 0;
-        const all = totalsAllTime[a.id] || 0;
+        const week = round2(totalsWeek[a.id] || 0);
+        const all = round2(totalsAllTime[a.id] || 0);
         return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${week}</span> ${a.unit} (week to date) / <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
     }).join('');
 
@@ -291,7 +295,7 @@ async function renderActivityChart(activity) {
 
     const today = todayStr();
 
-    const values = dates.map(d => totalsByDate[d] || 0);
+    const values = dates.map(d => round2(totalsByDate[d] || 0));
     const labels = dates.map(d => formatLabel(d, currentPeriod));
     const pctLabels = dates.map((d, i) => {
         if (dayTargets[i] === null) return '';
@@ -299,7 +303,7 @@ async function renderActivityChart(activity) {
         return `${Math.round((values[i] / dayTargets[i]) * 100)}%`;
     });
 
-    const grandTotal = values.reduce((s, v) => s + v, 0);
+    const grandTotal = round2(values.reduce((s, v) => s + v, 0));
     const currentTarget = dailyTargets[activity.id] || null;
     const metaEl = document.getElementById(`meta-${activity.id}`);
     if (metaEl) {

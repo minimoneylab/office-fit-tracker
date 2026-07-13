@@ -11,7 +11,11 @@ function localDateStr(d = new Date()) {
     return `${y}-${m}-${day}`;
 }
 
-const todayStr = () => localDateStr();
+function todayStr() { return localDateStr(); }
+
+function round2(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+}
 
 document.getElementById('today-label').textContent =
     new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -201,6 +205,31 @@ async function refreshSummary() {
 
     renderSummaryList(data, error);
     renderEntriesList(data, error);
+    updateMissionStamp(data);
+}
+
+function updateMissionStamp(data) {
+    const stampEl = document.getElementById('mission-stamp');
+    if (!stampEl) return;
+
+    const targetedIds = Object.keys(dailyTargets);
+    if (targetedIds.length === 0 || !data) {
+        stampEl.style.display = 'none';
+        return;
+    }
+
+    const totalsByActivity = {};
+    data.forEach(row => {
+        totalsByActivity[row.activity_type_id] = (totalsByActivity[row.activity_type_id] || 0) + Number(row.value);
+    });
+
+    const allComplete = targetedIds.every(actId => {
+        const target = dailyTargets[actId].target_value;
+        const actual = totalsByActivity[actId] || 0;
+        return actual >= target;
+    });
+
+    stampEl.style.display = allComplete ? 'block' : 'none';
 }
 
 function renderSummaryList(data, error) {
@@ -221,7 +250,7 @@ function renderSummaryList(data, error) {
     });
 
     Object.entries(grouped).forEach(([name, info]) => {
-        const total = info.values.reduce((a, b) => a + b, 0);
+        const total = round2(info.values.reduce((a, b) => a + b, 0));
         const target = dailyTargets[info.activityTypeId];
         const li = document.createElement('li');
 
@@ -229,7 +258,7 @@ function renderSummaryList(data, error) {
         if (info.unit === 'litres' || info.unit === 'ml') {
             text = `Drank <span class="num">${total}</span> ${info.unit} of ${name.toLowerCase()}`;
         } else {
-            const avg = (total / info.values.length).toFixed(1);
+            const avg = round2(total / info.values.length);
             text = `<span class="num">${info.values.length}</span> sets of ${name} in average <span class="num">${avg}</span> ${info.unit} each (total ${total} ${info.unit})`;
         }
 

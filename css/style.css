@@ -492,17 +492,17 @@ body {
 .no-target-note { font-size: 0.75rem; color: var(--text-light); margin-top: 8px; }
 
 .scrawl-summary {
-    font-family: 'Caveat', cursive;
-    font-size: 1.6rem;
-    color: #3A3A2E;
-    line-height: 1.7;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text);
+    line-height: 1.9;
     margin: 6px 0 26px;
     padding-left: 6px;
 }
-.scrawl-summary .scrawl-since { color: var(--text-mid); font-size: 1.3rem; margin-bottom: 6px; }
+.scrawl-summary .scrawl-since { color: var(--text-mid); font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
 .scrawl-summary .scrawl-line { }
 .scrawl-summary .scrawl-num { color: var(--accent); font-weight: 600; }
-.scrawl-summary .scrawl-achievement { margin-top: 8px; color: #4A8B6F; font-weight: 600; }
+.scrawl-summary .scrawl-achievement { margin-top: 10px; font-size: 1rem; color: #4A8B6F; font-weight: 600; }
 
 @keyframes paperFlash {
     0% { transform: rotate(-2deg) scale(1); }

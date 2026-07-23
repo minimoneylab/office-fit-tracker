@@ -97,7 +97,10 @@ async function init() {
             document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentPeriod = btn.dataset.period;
-            if (selectedUserId) renderAllCharts();
+            if (selectedUserId) {
+                renderAllCharts();
+                renderScrawlSummary();
+            }
         };
     });
 }
@@ -166,21 +169,30 @@ async function renderScrawlSummary() {
     const sinceLabel = new Date(sinceDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     const weekStart = mondayOfThisWeek();
+    const monthStart = firstOfThisMonth();
     const today = todayStr();
 
-    const totalsWeek = {};
+    const totalsPeriod = {};
     const totalsAllTime = {};
     logs.forEach(l => {
         totalsAllTime[l.activity_type_id] = (totalsAllTime[l.activity_type_id] || 0) + Number(l.value);
-        if (l.log_date >= weekStart && l.log_date <= today) {
-            totalsWeek[l.activity_type_id] = (totalsWeek[l.activity_type_id] || 0) + Number(l.value);
+
+        const inWeek = l.log_date >= weekStart && l.log_date <= today;
+        const inMonth = l.log_date >= monthStart && l.log_date <= today;
+        if ((currentPeriod === 'week' && inWeek) || (currentPeriod === 'month' && inMonth)) {
+            totalsPeriod[l.activity_type_id] = (totalsPeriod[l.activity_type_id] || 0) + Number(l.value);
         }
     });
 
+    const periodLabel = currentPeriod === 'week' ? 'week to date' : 'month to date';
+
     const activityLines = activityTypes.map(a => {
-        const week = round2(totalsWeek[a.id] || 0);
         const all = round2(totalsAllTime[a.id] || 0);
-        return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${week}</span> ${a.unit} (week to date) / <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
+        if (currentPeriod === 'all') {
+            return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
+        }
+        const period = round2(totalsPeriod[a.id] || 0);
+        return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${period}</span> ${a.unit} (${periodLabel}) / <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
     }).join('');
 
     const achievement = computeWeeklyAchievement(logs);

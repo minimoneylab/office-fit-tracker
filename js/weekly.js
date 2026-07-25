@@ -234,7 +234,15 @@ function computeWeeklyAchievement(logs) {
 function buildChartCards() {
     const wrap = document.getElementById('activity-charts');
     wrap.innerHTML = '';
-    activityTypes.forEach(a => {
+
+    const goalActivities = activityTypes.filter(a => dailyTargets[a.id]);
+
+    if (goalActivities.length === 0) {
+        wrap.innerHTML = `<div class="card"><div class="empty-state">No daily goals set yet — head to the Daily page and set a target for an activity, and it'll show up here.</div></div>`;
+        return;
+    }
+
+    goalActivities.forEach(a => {
         const card = document.createElement('div');
         card.className = 'card chart-card';
         card.innerHTML = `
@@ -245,14 +253,14 @@ function buildChartCards() {
             <div class="chart-canvas-wrap">
                 <canvas id="chart-${a.id}" height="90"></canvas>
             </div>
-            ${!dailyTargets[a.id] ? `<div class="no-target-note">No daily target set for ${a.name} — set one on the Daily page to see % achieved.</div>` : ''}
         `;
         wrap.appendChild(card);
     });
 }
 
 async function renderAllCharts() {
-    for (const a of activityTypes) {
+    const goalActivities = activityTypes.filter(a => dailyTargets[a.id]);
+    for (const a of goalActivities) {
         await renderActivityChart(a);
     }
 }

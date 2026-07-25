@@ -185,15 +185,18 @@ async function renderScrawlSummary() {
     });
 
     const periodLabel = currentPeriod === 'week' ? 'week to date' : 'month to date';
+    const goalActivities = activityTypes.filter(a => dailyTargets[a.id]);
 
-    const activityLines = activityTypes.map(a => {
-        const all = round2(totalsAllTime[a.id] || 0);
-        if (currentPeriod === 'all') {
-            return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
-        }
-        const period = round2(totalsPeriod[a.id] || 0);
-        return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${period}</span> ${a.unit} (${periodLabel}) / <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
-    }).join('');
+    const activityLines = goalActivities.length > 0
+        ? goalActivities.map(a => {
+            const all = round2(totalsAllTime[a.id] || 0);
+            if (currentPeriod === 'all') {
+                return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
+            }
+            const period = round2(totalsPeriod[a.id] || 0);
+            return `<div class="scrawl-line">${a.icon || ''} ${a.name}: <span class="scrawl-num">${period}</span> ${a.unit} (${periodLabel}) / <span class="scrawl-num">${all}</span> ${a.unit} (since day one)</div>`;
+        }).join('')
+        : `<div class="scrawl-line" style="color: var(--text-light);">No daily goals set yet — head to the Daily page to set one.</div>`;
 
     const achievement = computeWeeklyAchievement(logs);
     const achievementLine = achievement !== null
